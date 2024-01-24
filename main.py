@@ -4,7 +4,9 @@ from functools import wraps
 
 app = Flask(__name__)
 app.config['BASIC_AUTH_USERNAME']='username'
-app.config['BASIC_AUTH_PASSWORD']='password'
+app.config['BASIC_AUTH_PASSWORD']='12345678'
+
+students = [{"name": "bunyarit", "id":"6530300317", "major": "T12"}]
 
 @app.route('/')
 def welcome():
@@ -12,7 +14,7 @@ def welcome():
 
 @app.route('/students', methods=["GET"])
 def get_students():
-    return jsonify({})
+    return jsonify({"students": students})
 
 
 def run(host="localhost", port=80):
