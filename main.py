@@ -27,7 +27,7 @@ def get_student(std_id):
     if student:
         return jsonify({"students": students}), 200
     else:
-        return jsonify({"error":"Student not found"}), 500
+        return jsonify({"error":"Student not found"}), 404
 
 
 @app.route('/students', methods=["POST"])
@@ -44,7 +44,7 @@ def post_students():
         students.append(new_std)
         return jsonify(new_std), 200
     else:
-        return jsonify({"error":"Cannot create new student"})
+        return jsonify({"error":"Cannot create new student"}), 500
 
 @app.route('/students/<int:std_id>', methods=["PUT"])
 @basic_auth.required
@@ -55,7 +55,17 @@ def put_students(std_id):
         std.update(data)
         return jsonify(std), 200
     else:
-        return jsonify( {"error":"Student not found"})
+        return jsonify( {"error":"Student not found"}), 404
+
+@app.route("/students/<int:std_id>", methods=["DELETE"])
+@basic_auth.required
+def delete_students(std_id):
+    std = next((s for s in students if s["std_id"] == std_id), None)
+    if std:
+        std.clear()
+        return jsonify({"message":"Student deleted successfully"}), 200
+    else:
+        return jsonify({"error": "Student not found"}), 404
 
 def run(host="127.0.0.1", port=80):
     app.run(host=host, port=port, debug=True)
