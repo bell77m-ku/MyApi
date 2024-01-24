@@ -62,7 +62,7 @@ def put_students(std_id):
 def delete_students(std_id):
     std = next((s for s in students if s["std_id"] == std_id), None)
     if std:
-        std.clear()
+        students.remove(std)
         return jsonify({"message":"Student deleted successfully"}), 200
     else:
         return jsonify({"error": "Student not found"}), 404
